@@ -1,0 +1,21 @@
+{
+    "name": "asset-bucket-proxy",
+    "version": "1.0.0",
+    "description": "Proxy layer for accessing assets stored in a Google bucket",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "keywords": [],
+    "author": "NAV IT",
+    "license": "MIT",
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    },
+    "dependencies": {
+        "@google-cloud/storage": "^5.16.0",
+        "express": "^4.17.1",
+        "helmet": "^4.6.0"
+    }
+}

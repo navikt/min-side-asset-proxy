@@ -1,0 +1,6 @@
+{
+    "app": "asset-bucket-proxy",
+    "namespace": "frontendplattform",
+    "team": "frontendplattform",
+    "ingresses": ["https://asset-bucket-proxy.dev.intern.nav.no"]
+}
