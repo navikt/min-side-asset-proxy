@@ -7,8 +7,10 @@ Proxy for å hente assets som ligger på en bucket i GCP. Hensikten er å kunne 
 
 Kjøre opp utviklingsmiljø:
 
-`npm install`
-`npm run dev`
+```
+npm install
+npm run dev
+```
 
 ---
 
