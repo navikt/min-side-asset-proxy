@@ -1,0 +1,39 @@
+name: Build and deploy asset-bucket-proxy
+on:
+  push:
+    branches:
+    - main
+env:
+  IMAGE: docker.pkg.github.com/${{ github.repository }}/asset-bucket-proxy:${{ github.sha }}
+jobs:
+  build:
+    name: Build and push Docker-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2.5.0
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build and publish Docker image
+        run: docker build --pull --tag ${IMAGE} . && echo $GITHUB_TOKEN | docker login\
+          \ --username $GITHUB_REPOSITORY --password-stdin https://docker.pkg.github.com\
+          \ && docker push ${IMAGE}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  deployToDev:
+    name: Deploy to dev-gcp
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy to dev-gcp
+      uses: nais/deploy/actions/deploy@v1
+      env:
+        APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+        CLUSTER: dev-gcp
+        RESOURCE: nais/nais.yml
+        VARS: nais/dev-gcp.json
