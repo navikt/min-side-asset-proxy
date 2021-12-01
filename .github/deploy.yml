@@ -4,7 +4,7 @@ on:
     branches:
     - main
 env:
-  IMAGE: docker.pkg.github.com/${{ github.repository }}/asset-bucket-proxy:${{ github.sha }}
+  docker_image: ghcr.io/${{ github.repository }}:${{ github.sha }}
 jobs:
   build:
     name: Build and push Docker-image
@@ -18,12 +18,18 @@ jobs:
           node-version: '14'
       - name: Install dependencies
         run: npm ci
+      - name: Login
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and publish Docker image
-        run: docker build --pull --tag ${IMAGE} . && echo $GITHUB_TOKEN | docker login\
-          \ --username $GITHUB_REPOSITORY --password-stdin https://docker.pkg.github.com\
-          \ && docker push ${IMAGE}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ env.docker_image }}
   deployToDev:
     name: Deploy to dev-gcp
     needs: build
@@ -37,3 +43,4 @@ jobs:
         CLUSTER: dev-gcp
         RESOURCE: nais/nais.yml
         VARS: nais/dev-gcp.json
+        VAR: image=${{ env.docker_image }}
