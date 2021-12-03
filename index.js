@@ -16,7 +16,7 @@ app.get('/react-17.esm.js', (req, res) => {
 
 app.get('/react-17.0.2.esm.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript');
-    const reactPathname = 'react/esm/index.js';
+    const reactPathname = 'react/17.0.2/esm/index.js';
     const file = bucket.file(reactPathname);
     file.createReadStream()
         .on('error', (error) => console.error('Failed to read file', error))
@@ -28,7 +28,7 @@ app.get('/react-17.0.2.esm.js', (req, res) => {
 
 app.get('/react-dom-17.esm.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript');
-    const reactDomPathname = 'react-dom/esm/index.js';
+    const reactDomPathname = 'react-dom/17.0.2/esm/index.js';
     const file = bucket.file(reactDomPathname);
     file.createReadStream()
         .on('error', (error) => console.error('Failed to read file', error))
