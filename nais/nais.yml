@@ -32,7 +32,7 @@ spec:
   {{/each}}
   gcp:
     buckets:
-      - name: frontendplattform-assets
+      - name: frontendplattform-assets-dev
         lifecycleCondition:
           age: 7
           numNewerVersions: 2

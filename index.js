@@ -3,7 +3,7 @@ const helmet = require('helmet');
 const { Storage } = require('@google-cloud/storage');
 
 const storage = new Storage();
-const bucket = storage.bucket('frontendplattform-assets');
+const bucket = storage.bucket('frontendplattform-assets-dev');
 
 const app = express();
 app.use(helmet());
