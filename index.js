@@ -11,24 +11,24 @@ app.get('/isReady', (req, res) => res.sendStatus(200));
 app.get('/isAlive', (req, res) => res.sendStatus(200));
 
 app.get('/react-17.esm.js', (req, res) => {
+    res.setHeader('Content-Type', 'application/javascript');
     const reactPathname = 'react/esm/index.js';
     const file = bucket.file(reactPathname);
     file.createReadStream()
         .on('error', (error) => console.error('Failed to read file', error))
         .on('end', () => {
-            res.setHeader('Content-Type', 'application/javascript');
             res.end();
         })
         .pipe(res);
 });
 
 app.get('/react-dom-17.esm.js', (req, res) => {
+    res.setHeader('Content-Type', 'application/javascript');
     const reactDomPathname = 'react-dom/esm/index.js';
     const file = bucket.file(reactDomPathname);
     file.createReadStream()
         .on('error', (error) => console.error('Failed to read file', error))
         .on('end', () => {
-            res.setHeader('Content-Type', 'application/javascript');
             res.end();
         })
         .pipe(res);
