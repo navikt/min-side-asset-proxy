@@ -11,6 +11,10 @@ app.get('/isReady', (req, res) => res.sendStatus(200));
 app.get('/isAlive', (req, res) => res.sendStatus(200));
 
 app.get('/react-17.esm.js', (req, res) => {
+    res.redirect('/react-17.0.2.esm.js', 302);
+});
+
+app.get('/react-17.0.2.esm.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript');
     const reactPathname = 'react/esm/index.js';
     const file = bucket.file(reactPathname);
