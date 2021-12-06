@@ -14,7 +14,7 @@ const corsOptions = {
 
 const app = express();
 app.use(helmet());
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 app.get('/isReady', (req, res) => res.sendStatus(200));
 app.get('/isAlive', (req, res) => res.sendStatus(200));
 
