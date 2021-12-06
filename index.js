@@ -10,11 +10,12 @@ const secondsInAYear = 31536000;
 const corsOptions = {
     origin: process.env.CORS_ALLOWED_DOMAIN,
     optionsSuccessStatus: 200,
+    methods: 'GET,HEAD'
 };
 
 const app = express();
 app.use(helmet());
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 app.get('/isReady', (req, res) => res.sendStatus(200));
 app.get('/isAlive', (req, res) => res.sendStatus(200));
 

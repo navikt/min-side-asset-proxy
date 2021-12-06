@@ -3,5 +3,5 @@
     "namespace": "frontendplattform",
     "team": "frontendplattform",
     "ingresses": ["https://asset-bucket-proxy.dev.intern.nav.no"],
-    "corsAllowedDomain": "https://*.dev.intern.nav.no"
+    "corsAllowedDomain": "*"
 }
