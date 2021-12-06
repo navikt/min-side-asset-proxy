@@ -37,3 +37,6 @@ spec:
           age: 7
           numNewerVersions: 2
           withState: ANY
+  env:
+    - name: CORS_ALLOWED_DOMAIN
+      value: {{corsAllowedDomain}}
