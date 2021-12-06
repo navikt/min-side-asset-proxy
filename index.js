@@ -4,6 +4,7 @@ const { Storage } = require('@google-cloud/storage');
 
 const storage = new Storage();
 const bucket = storage.bucket('frontendplattform-assets-dev');
+const secondsInAYear = 31536000;
 
 const app = express();
 app.use(helmet());
@@ -16,6 +17,7 @@ app.get('/react-17.esm.js', (req, res) => {
 
 app.get('/react-17.0.2.esm.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript');
+    res.setHeader('Cache-Control', `max-age=${secondsInAYear}`)
     const reactPathname = 'react/17.0.2/esm/index.js';
     const file = bucket.file(reactPathname);
     file.createReadStream()
@@ -32,6 +34,7 @@ app.get('/react-dom-17.esm.js', (req, res) => {
 
 app.get('/react-dom-17.0.2.esm.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript');
+    res.setHeader('Cache-Control', `max-age=${secondsInAYear}`)
     const reactDomPathname = 'react-dom/17.0.2/esm/index.js';
     const file = bucket.file(reactDomPathname);
     file.createReadStream()
