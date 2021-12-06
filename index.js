@@ -27,6 +27,10 @@ app.get('/react-17.0.2.esm.js', (req, res) => {
 });
 
 app.get('/react-dom-17.esm.js', (req, res) => {
+    res.redirect('/react-dom-17.0.2.esm.js', 302);
+});
+
+app.get('/react-dom-17.0.2.esm.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript');
     const reactDomPathname = 'react-dom/17.0.2/esm/index.js';
     const file = bucket.file(reactDomPathname);
