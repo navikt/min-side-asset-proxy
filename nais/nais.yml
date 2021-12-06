@@ -39,4 +39,4 @@ spec:
           withState: ANY
   env:
     - name: CORS_ALLOWED_DOMAIN
-      value: {{corsAllowedDomain}}
+      value: "{{corsAllowedDomain}}"
