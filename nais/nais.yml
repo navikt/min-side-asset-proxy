@@ -37,6 +37,9 @@ spec:
           age: 7
           numNewerVersions: 2
           withState: ANY
+    prometheus:
+      enabled: true
+      path: /internal/metrics
   env:
     - name: CORS_ALLOWED_DOMAIN
       value: "{{corsAllowedDomain}}"
