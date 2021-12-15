@@ -44,3 +44,17 @@ jobs:
         RESOURCE: nais/nais.yml
         VARS: nais/dev-gcp.json
         VAR: image=${{ env.docker_image }}
+  deployToProd:
+    name: Deploy to prod-gcp
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy to prod-gcp
+      uses: nais/deploy/actions/deploy@v1
+      env:
+        APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+        CLUSTER: prod-gcp
+        RESOURCE: nais/nais.yml
+        VARS: nais/prod-gcp.json
+        VAR: image=${{ env.docker_image }}
