@@ -1,11 +1,8 @@
-const { Storage } = require('@google-cloud/storage');
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const promClient = require('prom-client');
-
-const storage = new Storage();
-const bucket = storage.bucket('frontendplattform-assets-dev');
+const FileReader = require('./storage/FileReader');
 
 const secondsInAYear = 31536000;
 const corsOptions = {
@@ -18,7 +15,7 @@ promClient.collectDefaultMetrics();
 const requestCounter = new promClient.Counter({
     name: 'request_count',
     help: 'Number of requests',
-    labelNames: ['file']
+    labelNames: ['file'],
 });
 
 const app = express();
@@ -42,9 +39,9 @@ app.get('/react-17.0.2.esm.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript');
     res.setHeader('Cache-Control', `max-age=${secondsInAYear}`);
     const reactPathname = 'react/17.0.2/esm/index.js';
-    const file = bucket.file(reactPathname);
-    file.createReadStream()
-        .on('error', (error) => console.error('Failed to read file', error))
+
+    new FileReader(reactPathname)
+        .getReadStream()
         .on('end', () => {
             res.end();
         })
@@ -60,9 +57,9 @@ app.get('/react-dom-17.0.2.esm.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript');
     res.setHeader('Cache-Control', `max-age=${secondsInAYear}`);
     const reactDomPathname = 'react-dom/17.0.2/esm/index.js';
-    const file = bucket.file(reactDomPathname);
-    file.createReadStream()
-        .on('error', (error) => console.error('Failed to read file', error))
+
+    new FileReader(reactDomPathname)
+        .getReadStream()
         .on('end', () => {
             res.end();
         })
