@@ -87,7 +87,7 @@ app.get('/@navikt-ds-icons-0.7.1.esm.js', (req, res) => {
     requestCounter.inc({ file: 'ds-icons' });
     res.setHeader('Content-Type', 'application/javascript');
     res.setHeader('Cache-Control', `max-age=${secondsInAYear}`);
-    const dsIconsPathname = '@navikt/ds-icons/0.7.1/esm/index.esm.js';
+    const dsIconsPathname = '@navikt/ds-icons/0.7.1/esm/index.js';
     const file = bucket.file(dsIconsPathname);
     file.createReadStream()
         .on('error', (error) => console.error('Failed to read file', error))
@@ -129,7 +129,7 @@ app.get('/uuid-8.3.2.esm.js', (req, res) => {
     requestCounter.inc({ file: 'uuid' });
     res.setHeader('Content-Type', 'application/javascript');
     res.setHeader('Cache-Control', `max-age=${secondsInAYear}`);
-    const uuidPathname = 'uuid/8.3.2/esm/index.js';
+    const uuidPathname = 'uuid/8.3.2/esm/esm-browser-v4.js';
     const file = bucket.file(uuidPathname);
     file.createReadStream()
         .on('error', (error) => console.error('Failed to read file', error))
@@ -185,7 +185,7 @@ app.get('/react-modal-3.14.3.esm.js', (req, res) => {
     requestCounter.inc({ file: 'react-modal' });
     res.setHeader('Content-Type', 'application/javascript');
     res.setHeader('Cache-Control', `max-age=${secondsInAYear}`);
-    const reactModalPathname = 'react-modal/3.14.3/esm/index.esm.js';
+    const reactModalPathname = 'react-modal/3.14.3/esm/index.js';
     const file = bucket.file(reactModalPathname);
     file.createReadStream()
         .on('error', (error) => console.error('Failed to read file', error))
