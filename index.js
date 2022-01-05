@@ -97,6 +97,20 @@ app.get('/@navikt-ds-icons-0.7.1.esm.js', (req, res) => {
         .pipe(res);
 });
 
+app.get('/@navikt-ds-css-0.12.6.css', (req, res) => {
+    requestCounter.inc({ file: 'ds-css' });
+    res.setHeader('Content-Type', 'text/css');
+    res.setHeader('Cache-Control', `max-age=${secondsInAYear}`);
+    const dsCssPathname = '@navikt/ds-css/0.12.6/index.css';
+    const file = bucket.file(dsCssPathname);
+    file.createReadStream()
+        .on('error', (error) => console.error('Failed to read file', error))
+        .on('end', () => {
+            res.end();
+        })
+        .pipe(res);
+});
+
 app.get('/classnames-2.3.1.esm.js', (req, res) => {
     requestCounter.inc({ file: 'classnames' });
     res.setHeader('Content-Type', 'application/javascript');
