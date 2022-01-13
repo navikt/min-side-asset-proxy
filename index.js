@@ -4,6 +4,8 @@ const cors = require('cors');
 const promClient = require('prom-client');
 const GcsFile = require('./storage/GcsFile');
 const SampleFile = require('./storage/SampleFile');
+const aliasesEsm = require('./aliases-esm.json');
+const aliasesCss = require('./aliases-css.json');
 
 const secondsInAYear = 31536000;
 const corsOptions = {
@@ -39,6 +41,24 @@ const getCssAssetPathname = (libName, libVersion) => {
 };
 
 const isDevelopment = process.env.development === 'true';
+
+Object.keys(aliasesEsm).forEach((assetName) => {
+    const assetAliases = aliasesEsm[assetName];
+    for (const [alias, actual] of Object.entries(assetAliases)) {
+        app.get(`/asset/${assetName}/v/${alias}/index.esm.js`, async (req, res) => {
+            res.redirect(`/asset/${assetName}/v/${actual}/index.esm.js`);
+        });
+    }
+});
+
+Object.keys(aliasesCss).forEach((assetName) => {
+    const assetAliases = aliasesCss[assetName];
+    for (const [alias, actual] of Object.entries(assetAliases)) {
+        app.get(`/asset/${assetName}/v/${alias}/index.css`, async (req, res) => {
+            res.redirect(`/asset/${assetName}/v/${actual}/index.css`);
+        });
+    }
+});
 
 app.get('/asset/:libName/v/:libVersion/index.esm.js', async (req, res) => {
     const { libName, libVersion } = req.params;
