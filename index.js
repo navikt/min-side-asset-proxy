@@ -2,7 +2,8 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const promClient = require('prom-client');
-const FileReader = require('./storage/FileReader');
+const GcsFile = require('./storage/GcsFile');
+const SampleFile = require('./storage/SampleFile');
 
 const secondsInAYear = 31536000;
 const corsOptions = {
@@ -30,40 +31,69 @@ app.get('/internal/metrics', async (req, res) => {
 app.get('/isReady', (req, res) => res.sendStatus(200));
 app.get('/isAlive', (req, res) => res.sendStatus(200));
 
-app.get('/react-17.esm.js', (req, res) => {
-    res.redirect('/react-17.0.2.esm.js', 302);
+const getJsAssetPathname = (libName, libVersion) => {
+    return `${libName}/${libVersion}/esm/index.js`;
+};
+const getCssAssetPathname = (libName, libVersion) => {
+    return `${libName}/${libVersion}/index.css`;
+};
+
+const isDevelopment = process.env.development === 'true';
+
+app.get('/asset/:libName/v/:libVersion/index.esm.js', async (req, res) => {
+    const { libName, libVersion } = req.params;
+    const pathname = getJsAssetPathname(libName, libVersion);
+    const sampleFilePath = __dirname + '/sample.esm.js';
+    const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
+    if (isDevelopment) {
+        requestCounter.inc({ file: libName });
+    }
+
+    try {
+        const fileExists = await file.exists();
+        if (fileExists) {
+            res.setHeader('Content-Type', 'application/javascript');
+            res.setHeader('Cache-Control', `max-age=${secondsInAYear}`);
+            file.readStream
+                .on('end', () => {
+                    res.end();
+                })
+                .pipe(res);
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (error) {
+        console.error('error occured', error);
+        res.sendStatus(500);
+    }
 });
 
-app.get('/react-17.0.2.esm.js', (req, res) => {
-    requestCounter.inc({ file: 'react' });
-    res.setHeader('Content-Type', 'application/javascript');
-    res.setHeader('Cache-Control', `max-age=${secondsInAYear}`);
-    const reactPathname = 'react/17.0.2/esm/index.js';
+app.get('/asset/:libName/v/:libVersion/index.css', async (req, res) => {
+    const { libName, libVersion } = req.params;
+    const pathname = getCssAssetPathname(libName, libVersion);
+    const sampleFilePath = __dirname + '/sample.css';
+    const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
+    if (isDevelopment) {
+        requestCounter.inc({ file: libName });
+    }
 
-    new FileReader(reactPathname)
-        .getReadStream()
-        .on('end', () => {
-            res.end();
-        })
-        .pipe(res);
-});
-
-app.get('/react-dom-17.esm.js', (req, res) => {
-    res.redirect('/react-dom-17.0.2.esm.js', 302);
-});
-
-app.get('/react-dom-17.0.2.esm.js', (req, res) => {
-    requestCounter.inc({ file: 'react-dom' });
-    res.setHeader('Content-Type', 'application/javascript');
-    res.setHeader('Cache-Control', `max-age=${secondsInAYear}`);
-    const reactDomPathname = 'react-dom/17.0.2/esm/index.js';
-
-    new FileReader(reactDomPathname)
-        .getReadStream()
-        .on('end', () => {
-            res.end();
-        })
-        .pipe(res);
+    try {
+        const fileExists = await file.exists();
+        if (fileExists) {
+            res.setHeader('Content-Type', 'text/css');
+            res.setHeader('Cache-Control', `max-age=${secondsInAYear}`);
+            file.readStream
+                .on('end', () => {
+                    res.end();
+                })
+                .pipe(res);
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (error) {
+        console.error('error occured', error);
+        res.sendStatus(500);
+    }
 });
 
 app.get('/@navikt-ds-react-0.14.3-beta.1.esm.js', (req, res) => {
