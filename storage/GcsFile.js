@@ -4,14 +4,16 @@ const storage = new Storage();
 const bucket = storage.bucket('frontendplattform-assets-dev');
 
 class GcsFile {
+    file = null;
     readStream = null;
 
     constructor(pathToFile) {
-        this.readStream = bucket.file(pathToFile);
+        this.file = bucket.file(pathToFile);
+        this.readStream = this.file.createReadStream();
     }
 
     exists() {
-        return this.readStream.exists();
+        return this.file.exists();
     }
 }
 
