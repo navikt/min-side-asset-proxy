@@ -4,7 +4,6 @@ const storage = new Storage();
 const bucket = storage.bucket('frontendplattform-assets-dev');
 
 class GcsFile {
-    fileObject = null;
     readStream = null;
 
     constructor(pathToFile) {
@@ -12,7 +11,7 @@ class GcsFile {
     }
 
     exists() {
-        return this.fileObject.exists();
+        return this.readStream.exists();
     }
 }
 
