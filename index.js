@@ -65,7 +65,7 @@ app.get('/asset/:libName/v/:libVersion/index.esm.js', async (req, res) => {
     const pathname = getJsAssetPathname(libName, libVersion);
     const sampleFilePath = __dirname + '/sample.esm.js';
     const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
-    if (isDevelopment) {
+    if (!isDevelopment) {
         requestCounter.inc({ file: libName });
     }
 
@@ -93,7 +93,7 @@ app.get('/asset/:libName/v/:libVersion/index.css', async (req, res) => {
     const pathname = getCssAssetPathname(libName, libVersion);
     const sampleFilePath = __dirname + '/sample.css';
     const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
-    if (isDevelopment) {
+    if (!isDevelopment) {
         requestCounter.inc({ file: libName });
     }
 
