@@ -30,8 +30,8 @@ app.get('/internal/metrics', async (req, res) => {
     res.set('Content-Type', promClient.register.contentType).send(metrics);
 });
 
-app.get('/isReady', (req, res) => res.sendStatus(200));
-app.get('/isAlive', (req, res) => res.sendStatus(200));
+app.get('/internal/isReady', (req, res) => res.sendStatus(200));
+app.get('/internal/isAlive', (req, res) => res.sendStatus(200));
 
 const getJsAssetPathname = (libName, libVersion) => {
     return `${libName}/${libVersion}/esm/index.js`;
