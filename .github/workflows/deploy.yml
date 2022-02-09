@@ -1,4 +1,4 @@
-name: Build and deploy asset-bucket-proxy
+name: Build and deploy min-side-asset-proxy
 on:
   push:
     branches:

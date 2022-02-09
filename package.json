@@ -1,5 +1,5 @@
 {
-    "name": "asset-bucket-proxy",
+    "name": "min-side-asset-proxy",
     "version": "1.0.0",
     "description": "Proxy layer for accessing assets stored in a Google bucket",
     "main": "index.js",
