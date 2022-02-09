@@ -83,7 +83,7 @@ app.get('/asset/:libName/v/:libVersion/index.esm.js', async (req, res) => {
             res.sendStatus(404);
         }
     } catch (error) {
-        console.error('error occured', error);
+        console.error('Error getting asset', error.statusMessage);
         res.sendStatus(500);
     }
 });
@@ -111,7 +111,7 @@ app.get('/asset/:libName/v/:libVersion/index.css', async (req, res) => {
             res.sendStatus(404);
         }
     } catch (error) {
-        console.error('error occured', error);
+        console.error('Error getting asset', error.statusMessage);
         res.sendStatus(500);
     }
 });
