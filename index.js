@@ -61,15 +61,15 @@ Object.keys(aliasesCss).forEach((assetName) => {
 });
 
 app.get('/asset/:libName/v/:libVersion/index.esm.js', async (req, res) => {
-    const { libName, libVersion } = req.params;
-    const pathname = getJsAssetPathname(libName, libVersion);
-    const sampleFilePath = __dirname + '/sample.esm.js';
-    const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
-    if (!isDevelopment) {
-        requestCounter.inc({ file: libName });
-    }
-
     try {
+        const { libName, libVersion } = req.params;
+        const pathname = getJsAssetPathname(libName, libVersion);
+        const sampleFilePath = __dirname + '/sample.esm.js';
+        const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
+        if (!isDevelopment) {
+            requestCounter.inc({ file: libName });
+        }
+
         const fileExists = await file.exists();
         if (fileExists) {
             res.setHeader('Content-Type', 'application/javascript');
@@ -89,15 +89,15 @@ app.get('/asset/:libName/v/:libVersion/index.esm.js', async (req, res) => {
 });
 
 app.get('/asset/:libName/v/:libVersion/index.css', async (req, res) => {
-    const { libName, libVersion } = req.params;
-    const pathname = getCssAssetPathname(libName, libVersion);
-    const sampleFilePath = __dirname + '/sample.css';
-    const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
-    if (!isDevelopment) {
-        requestCounter.inc({ file: libName });
-    }
-
     try {
+        const { libName, libVersion } = req.params;
+        const pathname = getCssAssetPathname(libName, libVersion);
+        const sampleFilePath = __dirname + '/sample.css';
+        const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
+        if (!isDevelopment) {
+            requestCounter.inc({ file: libName });
+        }
+
         const fileExists = await file.exists();
         if (fileExists) {
             res.setHeader('Content-Type', 'text/css');
