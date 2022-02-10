@@ -14,6 +14,7 @@ const getAliasMapping = require('./src/routing/aliasing');
 const secondsInAYear = 31536000;
 
 const app = express();
+
 applyMiddlwares(app);
 setupMetrics(app);
 applyHealthRoutes(app);
@@ -34,15 +35,15 @@ function setupAliases(aliases, assetType) {
 setupAliases(aliasesEsm, 'js');
 setupAliases(aliasesCss, 'css');
 
-app.get('/asset/:scope?/:libName/v/:libVersion/index.esm.js', async (req, res) => {
+app.get('/asset/:assetScope?/:assetName/v/:assetVersion/index.esm.js', async (req, res) => {
     try {
-        const { scope, libName, libVersion } = req.params;
+        const { assetScope, assetName, assetVersion } = req.params;
 
-        const pathname = getJsAssetPathname(libName, libVersion);
+        const pathname = getJsAssetPathname(assetName, assetVersion, assetScope);
         const sampleFilePath = __dirname + '/sample.esm.js';
         const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
         if (!isDevelopment) {
-            requestCounter.inc({ file: libName });
+            requestCounter.inc({ file: assetName });
         }
 
         const fileExists = await file.exists();
@@ -63,14 +64,14 @@ app.get('/asset/:scope?/:libName/v/:libVersion/index.esm.js', async (req, res) =
     }
 });
 
-app.get('/asset/:scope?/:libName/v/:libVersion/index.css', async (req, res) => {
+app.get('/asset/:assetScope?/:assetName/v/:assetVersion/index.css', async (req, res) => {
     try {
-        const { scope, libName, libVersion } = req.params;
-        const pathname = getCssAssetPathname(libName, libVersion);
+        const { assetScope, assetName, assetVersion } = req.params;
+        const pathname = getCssAssetPathname(assetName, assetVersion, assetScope);
         const sampleFilePath = __dirname + '/sample.css';
         const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
         if (!isDevelopment) {
-            requestCounter.inc({ file: libName });
+            requestCounter.inc({ file: assetName });
         }
 
         const fileExists = await file.exists();
