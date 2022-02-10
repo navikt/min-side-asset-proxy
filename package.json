@@ -2,10 +2,9 @@
     "name": "min-side-asset-proxy",
     "version": "1.0.0",
     "description": "Proxy layer for accessing assets stored in a Google bucket",
-    "main": "index.js",
     "scripts": {
-        "start": "node index.js",
-        "dev": "development=true nodemon index.js"
+        "start": "node server.js",
+        "dev": "development=true nodemon server.js"
     },
     "keywords": [],
     "author": "NAV IT",

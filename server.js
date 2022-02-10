@@ -6,18 +6,17 @@ const GcsFile = require('./src/storage/GcsFile');
 const SampleFile = require('./src/storage/SampleFile');
 const aliasesEsm = require('./aliases-esm.json');
 const aliasesCss = require('./aliases-css.json');
-const applyHealthRoutes = require('./src/routing/applyHealthRoutes');
-const { getJsAssetPathname, getCssAssetPathname } = require('./src/utils/assetPathnames');
+const { getJsAssetPathnameInBucket, getCssAssetPathnameInBucket } = require('./src/utils/pathnamesToAssetsInBucket');
 const isDevelopment = require('./src/utils/isDevelopment');
-const getAliasMapping = require('./src/routing/aliasing');
-
-const secondsInAYear = 31536000;
+const getAliasMapping = require('./src/routing/getAliasMapping');
 
 const app = express();
 
+app.get('/internal/isReady', (req, res) => res.sendStatus(200));
+app.get('/internal/isAlive', (req, res) => res.sendStatus(200));
+
 applyMiddlwares(app);
 setupMetrics(app);
-applyHealthRoutes(app);
 
 function setupAliasForAsset(assetName, alias, assetType) {
     const [aliasedPath, actualPath] = getAliasMapping(assetName, alias, assetType);
@@ -35,11 +34,12 @@ function setupAliases(aliases, assetType) {
 setupAliases(aliasesEsm, 'js');
 setupAliases(aliasesCss, 'css');
 
+const secondsInAYear = 31536000;
+
 app.get('/asset/:assetScope?/:assetName/v/:assetVersion/index.esm.js', async (req, res) => {
     try {
         const { assetScope, assetName, assetVersion } = req.params;
-
-        const pathname = getJsAssetPathname(assetName, assetVersion, assetScope);
+        const pathname = getJsAssetPathnameInBucket(assetName, assetVersion, assetScope);
         const sampleFilePath = __dirname + '/sample.esm.js';
         const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
         if (!isDevelopment) {
@@ -67,7 +67,7 @@ app.get('/asset/:assetScope?/:assetName/v/:assetVersion/index.esm.js', async (re
 app.get('/asset/:assetScope?/:assetName/v/:assetVersion/index.css', async (req, res) => {
     try {
         const { assetScope, assetName, assetVersion } = req.params;
-        const pathname = getCssAssetPathname(assetName, assetVersion, assetScope);
+        const pathname = getCssAssetPathnameInBucket(assetName, assetVersion, assetScope);
         const sampleFilePath = __dirname + '/sample.css';
         const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
         if (!isDevelopment) {

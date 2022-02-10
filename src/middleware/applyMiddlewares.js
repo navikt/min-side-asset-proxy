@@ -10,5 +10,4 @@ const corsOptions = {
 module.exports = (app) => {
     app.use(helmet());
     app.use(cors(corsOptions));
-    return app;
 };
