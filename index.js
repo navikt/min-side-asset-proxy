@@ -7,9 +7,9 @@ const SampleFile = require('./src/storage/SampleFile');
 const aliasesEsm = require('./aliases-esm.json');
 const aliasesCss = require('./aliases-css.json');
 const applyHealthRoutes = require('./src/routing/applyHealthRoutes');
-const getPackageIdentifiers = require('./src/utils/getPackageIdentifiers');
 const { getJsAssetPathname, getCssAssetPathname } = require('./src/utils/assetPathnames');
 const isDevelopment = require('./src/utils/isDevelopment');
+const getAliasMapping = require('./src/routing/aliasing');
 
 const secondsInAYear = 31536000;
 
@@ -19,23 +19,19 @@ setupMetrics(app);
 applyHealthRoutes(app);
 
 Object.keys(aliasesEsm).forEach((assetName) => {
-    const assetAliases = aliasesEsm[assetName];
-    const [packageScope, packageName] = getPackageIdentifiers(assetName);
-    for (const [alias, actual] of Object.entries(assetAliases)) {
-        app.get(`/asset/${packageScope ? `${packageScope}/` : ''}${packageName}/v/${alias}/index.esm.js`, async (req, res) => {
-            res.redirect(`/asset/${packageScope ? `${packageScope}/` : ''}${packageName}/v/${actual}/index.esm.js`);
-        });
-    }
+    const aliases = Object.entries(aliasesEsm[assetName]);
+    aliases.forEach((alias) => {
+        const [aliasedPath, actualPath] = getAliasMapping(assetName, alias, 'js');
+        app.get(aliasedPath, async (req, res) => res.redirect(actualPath));
+    });
 });
 
 Object.keys(aliasesCss).forEach((assetName) => {
-    const assetAliases = aliasesCss[assetName];
-    const [packageScope, packageName] = getPackageIdentifiers(assetName);
-    for (const [alias, actual] of Object.entries(assetAliases)) {
-        app.get(`/asset/${packageScope ? `${packageScope}/` : ''}${packageName}/v/${alias}/index.css`, async (req, res) => {
-            res.redirect(`/asset/${packageScope ? `${packageScope}/` : ''}${packageName}/v/${actual}/index.css`);
-        });
-    }
+    const aliases = Object.entries(aliasesCss[assetName]);
+    aliases.forEach((alias) => {
+        const [aliasedPath, actualPath] = getAliasMapping(assetName, alias, 'css');
+        app.get(aliasedPath, async (req, res) => res.redirect(actualPath));
+    });
 });
 
 app.get('/asset/:scope?/:libName/v/:libVersion/index.esm.js', async (req, res) => {
