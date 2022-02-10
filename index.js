@@ -18,20 +18,21 @@ applyMiddlwares(app);
 setupMetrics(app);
 applyHealthRoutes(app);
 
+function setupAliasForAsset(assetName, alias, assetType) {
+    const [aliasedPath, actualPath] = getAliasMapping(assetName, alias, assetType);
+    app.get(aliasedPath, async (req, res) => res.redirect(actualPath));
+}
 
-function applyAssetAliases(aliases, assetType) {
+function setupAliases(aliases, assetType) {
     const namesOfAliasedAssets = Object.keys(aliases);
-    namesOfAliasedAssets.forEach((aliasedAsset) => {
-        const aliasesForAsset = Object.entries(aliases[aliasedAsset]);
-        aliasesForAsset.forEach((alias) => {
-            const [aliasedPath, actualPath] = getAliasMapping(aliasedAsset, alias, assetType);
-            app.get(aliasedPath, async (req, res) => res.redirect(actualPath));
-        });
+    namesOfAliasedAssets.forEach((currentAssetName) => {
+        const aliasesForCurrentAsset = Object.entries(aliases[currentAssetName]);
+        aliasesForCurrentAsset.forEach((alias) => setupAliasForAsset(currentAssetName, alias, assetType));
     });
 }
 
-applyAssetAliases(aliasesEsm, 'js');
-applyAssetAliases(aliasesCss, 'css');
+setupAliases(aliasesEsm, 'js');
+setupAliases(aliasesCss, 'css');
 
 app.get('/asset/:scope?/:libName/v/:libVersion/index.esm.js', async (req, res) => {
     try {
