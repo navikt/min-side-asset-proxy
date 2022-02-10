@@ -1,56 +1,22 @@
 const express = require('express');
-const helmet = require('helmet');
-const cors = require('cors');
-const promClient = require('prom-client');
-const GcsFile = require('./storage/GcsFile');
-const SampleFile = require('./storage/SampleFile');
+const applyMiddlwares = require('./src/middleware/applyMiddlewares');
+const setupMetrics = require('./src/metrics/setupMetrics');
+const requestCounter = require('./src/metrics/requestCounter');
+const GcsFile = require('./src/storage/GcsFile');
+const SampleFile = require('./src/storage/SampleFile');
 const aliasesEsm = require('./aliases-esm.json');
 const aliasesCss = require('./aliases-css.json');
+const applyHealthRoutes = require('./src/routing/applyHealthRoutes');
+const getPackageIdentifiers = require('./src/utils/getPackageIdentifiers');
+const { getJsAssetPathname, getCssAssetPathname } = require('./src/utils/assetPathnames');
+const isDevelopment = require('./src/utils/isDevelopment');
 
 const secondsInAYear = 31536000;
-const corsOptions = {
-    origin: process.env.CORS_ALLOWED_DOMAIN,
-    optionsSuccessStatus: 200,
-    methods: 'GET,HEAD',
-};
-
-promClient.collectDefaultMetrics();
-const requestCounter = new promClient.Counter({
-    name: 'request_count',
-    help: 'Number of requests',
-    labelNames: ['file'],
-});
 
 const app = express();
-app.use(helmet());
-app.use(cors(corsOptions));
-
-app.get('/internal/metrics', async (req, res) => {
-    const metrics = await promClient.register.metrics();
-    res.set('Content-Type', promClient.register.contentType).send(metrics);
-});
-
-app.get('/internal/isReady', (req, res) => res.sendStatus(200));
-app.get('/internal/isAlive', (req, res) => res.sendStatus(200));
-
-const getJsAssetPathname = (libName, libVersion) => {
-    return `${libName}/${libVersion}/esm/index.js`;
-};
-const getCssAssetPathname = (libName, libVersion) => {
-    return `${libName}/${libVersion}/index.css`;
-};
-
-const isDevelopment = process.env.development === 'true';
-
-function getPackageIdentifiers(fullPackageName) {
-    const fragments = fullPackageName.split('/');
-    const packageIsScoped = fragments.length === 2;
-
-    const scope = packageIsScoped ? fragments[0] : null;
-    const name = packageIsScoped ? fragments[1] : fragments[0];
-
-    return [scope, name];
-}
+applyMiddlwares(app);
+setupMetrics(app);
+applyHealthRoutes(app);
 
 Object.keys(aliasesEsm).forEach((assetName) => {
     const assetAliases = aliasesEsm[assetName];
@@ -103,7 +69,7 @@ app.get('/asset/:scope?/:libName/v/:libVersion/index.esm.js', async (req, res) =
 
 app.get('/asset/:scope?/:libName/v/:libVersion/index.css', async (req, res) => {
     try {
-        const { libName, libVersion } = req.params;
+        const { scope, libName, libVersion } = req.params;
         const pathname = getCssAssetPathname(libName, libVersion);
         const sampleFilePath = __dirname + '/sample.css';
         const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
