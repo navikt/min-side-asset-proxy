@@ -4,12 +4,15 @@
     "description": "Proxy layer for accessing assets stored in a Google bucket",
     "scripts": {
         "start": "node server.js",
-        "dev": "development=true nodemon server.js"
+        "dev": "development=true nodemon server.js",
+        "test": "jest",
+        "test-watch": "jest --watch"
     },
     "keywords": [],
     "author": "NAV IT",
     "license": "MIT",
     "devDependencies": {
+        "jest": "^27.5.1",
         "nodemon": "^2.0.15"
     },
     "dependencies": {

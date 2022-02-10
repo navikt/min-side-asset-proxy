@@ -1,13 +1,13 @@
-exports.getJsAssetPathnameInBucket = (libName, libVersion, scope) => {
-    if (scope) {
-        return `${scope}/${libName}/${libVersion}/esm/index.js`;
+exports.getJsAssetPathnameInBucket = (assetName, assetVersion, assetScope) => {
+    if (!!assetScope) {
+        return `${assetScope}/${assetName}/${assetVersion}/esm/index.js`;
     }
-    return `${libName}/${libVersion}/esm/index.js`;
+    return `${assetName}/${assetVersion}/esm/index.js`;
 };
 
-exports.getCssAssetPathnameInBucket = (libName, libVersion, scope) => {
-    if (scope) {
-        return `${scope}/${libName}/${libVersion}/index.css`;
+exports.getCssAssetPathnameInBucket = (assetName, assetVersion, assetScope) => {
+    if (!!assetScope) {
+        return `${assetScope}/${assetName}/${assetVersion}/index.css`;
     }
-    return `${libName}/${libVersion}/index.css`;
+    return `${assetName}/${assetVersion}/index.css`;
 };
