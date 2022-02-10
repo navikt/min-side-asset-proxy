@@ -42,27 +42,40 @@ const getCssAssetPathname = (libName, libVersion) => {
 
 const isDevelopment = process.env.development === 'true';
 
+function getPackageIdentifiers(fullPackageName) {
+    const fragments = fullPackageName.split('/');
+    const packageIsScoped = fragments.length === 2;
+
+    const scope = packageIsScoped ? fragments[0] : null;
+    const name = packageIsScoped ? fragments[1] : fragments[0];
+
+    return [scope, name];
+}
+
 Object.keys(aliasesEsm).forEach((assetName) => {
     const assetAliases = aliasesEsm[assetName];
+    const [packageScope, packageName] = getPackageIdentifiers(assetName);
     for (const [alias, actual] of Object.entries(assetAliases)) {
-        app.get(`/asset/${assetName}/v/${alias}/index.esm.js`, async (req, res) => {
-            res.redirect(`/asset/${assetName}/v/${actual}/index.esm.js`);
+        app.get(`/asset/${packageScope ? `${packageScope}/` : ''}${packageName}/v/${alias}/index.esm.js`, async (req, res) => {
+            res.redirect(`/asset/${packageScope ? `${packageScope}/` : ''}${packageName}/v/${actual}/index.esm.js`);
         });
     }
 });
 
 Object.keys(aliasesCss).forEach((assetName) => {
     const assetAliases = aliasesCss[assetName];
+    const [packageScope, packageName] = getPackageIdentifiers(assetName);
     for (const [alias, actual] of Object.entries(assetAliases)) {
-        app.get(`/asset/${assetName}/v/${alias}/index.css`, async (req, res) => {
-            res.redirect(`/asset/${assetName}/v/${actual}/index.css`);
+        app.get(`/asset/${packageScope ? `${packageScope}/` : ''}${packageName}/v/${alias}/index.css`, async (req, res) => {
+            res.redirect(`/asset/${packageScope ? `${packageScope}/` : ''}${packageName}/v/${actual}/index.css`);
         });
     }
 });
 
-app.get('/asset/:libName/v/:libVersion/index.esm.js', async (req, res) => {
+app.get('/asset/:scope?/:libName/v/:libVersion/index.esm.js', async (req, res) => {
     try {
-        const { libName, libVersion } = req.params;
+        const { scope, libName, libVersion } = req.params;
+
         const pathname = getJsAssetPathname(libName, libVersion);
         const sampleFilePath = __dirname + '/sample.esm.js';
         const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
@@ -88,7 +101,7 @@ app.get('/asset/:libName/v/:libVersion/index.esm.js', async (req, res) => {
     }
 });
 
-app.get('/asset/:libName/v/:libVersion/index.css', async (req, res) => {
+app.get('/asset/:scope?/:libName/v/:libVersion/index.css', async (req, res) => {
     try {
         const { libName, libVersion } = req.params;
         const pathname = getCssAssetPathname(libName, libVersion);
