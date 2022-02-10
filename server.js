@@ -3,8 +3,8 @@ const applyMiddlewares = require('./src/middleware/applyMiddlewares');
 const setupMetrics = require('./src/metrics/setupMetrics');
 const setupAliasRouting = require('./src/routing/setupAliasRouting');
 const setupAssetRouting = require('./src/routing/setupAssetRouting');
-const aliasesEsm = require('./aliases-esm.json');
-const aliasesCss = require('./aliases-css.json');
+const aliasesEsm = require('./aliases/esm.json');
+const aliasesCss = require('./aliases/css.json');
 
 const app = express();
 

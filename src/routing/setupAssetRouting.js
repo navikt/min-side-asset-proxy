@@ -11,7 +11,7 @@ module.exports = (app) => {
         try {
             const { assetScope, assetName, assetVersion } = req.params;
             const pathname = getJsAssetPathnameInBucket(assetName, assetVersion, assetScope);
-            const sampleFilePath = __dirname + '/sample.esm.js';
+            const sampleFilePath = __dirname + '/../../sample.esm.js';
             const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
             if (!isDevelopment) {
                 requestCounter.inc({ file: assetName });
@@ -39,7 +39,7 @@ module.exports = (app) => {
         try {
             const { assetScope, assetName, assetVersion } = req.params;
             const pathname = getCssAssetPathnameInBucket(assetName, assetVersion, assetScope);
-            const sampleFilePath = __dirname + '/sample.css';
+            const sampleFilePath = __dirname + '/../../sample.css';
             const file = isDevelopment ? new SampleFile(sampleFilePath) : new GcsFile(pathname);
             if (!isDevelopment) {
                 requestCounter.inc({ file: assetName });
