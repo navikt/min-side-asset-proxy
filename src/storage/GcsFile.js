@@ -2,7 +2,7 @@ const { Storage } = require('@google-cloud/storage');
 const storage = new Storage();
 
 const bucket = storage.bucket('min-side-assets');
-
+    
 class GcsFile {
     file = null;
     readStream = null;
