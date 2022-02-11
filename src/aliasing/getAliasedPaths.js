@@ -14,7 +14,7 @@ function getCssAssetPath(packageName, packageVersion, scope) {
     return `/asset/${packageName}/v/${packageVersion}/index.css`;
 }
 
-module.exports = function getAliasMapping (assetName, alias, assetType) {
+function getAliasMapping(assetName, alias, assetType) {
     if (assetType !== 'js' && assetType !== 'css') {
         throw new Error('Invalid asset type in alias mapping, please specify as "js" or "css"');
     }
@@ -35,3 +35,16 @@ module.exports = function getAliasMapping (assetName, alias, assetType) {
 
     return [aliasedPath, actualPath];
 }
+
+module.exports = function getAliasedPaths(aliases, assetType) {
+    const namesOfAliasedAssets = Object.keys(aliases);
+    const aliasedPaths = [];
+    namesOfAliasedAssets.forEach((currentAssetName) => {
+        const aliasesForCurrentAsset = Object.entries(aliases[currentAssetName]);
+        aliasesForCurrentAsset.forEach((alias) => {
+            const pathWithAlias = getAliasMapping(currentAssetName, alias, assetType);
+            aliasedPaths.push(pathWithAlias);
+        });
+    });
+    return aliasedPaths;
+};
