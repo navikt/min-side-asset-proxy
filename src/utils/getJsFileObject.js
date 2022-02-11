@@ -3,13 +3,13 @@ const { getJsAssetPathnameInBucket } = require("../utils/pathnamesToAssetsInBuck
 const GcsFile = require("./../storage/GcsFile");
 const SampleFile = require("./../storage/SampleFile")
 
-function getBucketFile() {
+function getBucketFile(assetName, assetVersion, assetScope) {
     const filePathInBucket = getJsAssetPathnameInBucket(assetName, assetVersion, assetScope);
     return new GcsFile(filePathInBucket);
 }
 
 exports.getJsFileObject = function(assetName, assetVersion, assetScope) {
-    if (isDevelopment) {
+    if (isDevelopment()) {
         const sampleFilePath = `${__dirname}/../../sample.esm.js`
         return new SampleFile(sampleFilePath);
     }

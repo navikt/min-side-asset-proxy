@@ -8,7 +8,7 @@ const requestCounter = new promClient.Counter({
 });
 
 module.exports = (req, res, next) => {
-    if (!isDevelopment) {
+    if (!isDevelopment()) {
         requestCounter.inc({ file: req.assetName });
     }
     next();

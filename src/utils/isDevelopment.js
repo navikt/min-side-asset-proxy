@@ -1,1 +1,1 @@
-module.exports = process.env.development === 'true';
+module.exports = () => process.env.NODE_ENV === 'development';

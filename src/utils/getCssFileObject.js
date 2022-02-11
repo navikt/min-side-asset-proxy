@@ -3,13 +3,13 @@ const { getCssAssetPathnameInBucket } = require('./pathnamesToAssetsInBucket');
 const GcsFile = require('../storage/GcsFile');
 const SampleFile = require('../storage/SampleFile');
 
-function getBucketFile() {
+function getBucketFile(assetName, assetVersion, assetScope) {
     const filePathInBucket = getCssAssetPathnameInBucket(assetName, assetVersion, assetScope);
     return new GcsFile(filePathInBucket);
 }
 
 exports.getCssFileObject = function (assetName, assetVersion, assetScope) {
-    if (isDevelopment) {
+    if (isDevelopment()) {
         const sampleFilePath = `${__dirname}/../../sample.css`;
         return new SampleFile(sampleFilePath);
     }
