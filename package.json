@@ -4,7 +4,7 @@
     "description": "Proxy layer for accessing assets stored in a Google bucket",
     "scripts": {
         "start": "node server.js",
-        "dev": "development=true nodemon server.js",
+        "dev": "NODE_ENV=development nodemon server.js",
         "test": "jest",
         "test-watch": "jest --watch"
     },
