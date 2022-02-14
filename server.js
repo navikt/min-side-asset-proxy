@@ -5,7 +5,7 @@ const { getJsFileObject } = require('./src/utils/getJsFileObject');
 const { getCssFileObject } = require('./src/utils/getCssFileObject');
 const applyDefaultMiddlewares = require('./src/middleware/applyDefaultMiddlewares');
 const useMetrics = require('./src/middleware/useMetrics');
-const { cssHeaders, jsHeaders } = require('./src/middleware/headers');
+const { useCssAssetHeaders, useJsAssetHeaders } = require('./src/middleware/assetResponseHeaders');
 const aliasesEsm = require('./aliases/esm.json');
 const aliasesCss = require('./aliases/css.json');
 
@@ -23,7 +23,6 @@ app.get('/internal/metrics', async (req, res) => {
     const metrics = await promClient.register.metrics();
     res.set('Content-Type', promClient.register.contentType).send(metrics);
 });
-
 
 app.get('/internal/isReady', (req, res) => res.sendStatus(200));
 app.get('/internal/isAlive', (req, res) => res.sendStatus(200));
@@ -45,7 +44,7 @@ function respondWithFileContents(file, res) {
 app.get(
     '/asset/:assetScope?/:assetName/v/:assetVersion/index.esm.js',
     useMetrics(requestCounter),
-    jsHeaders,
+    useJsAssetHeaders,
     async (req, res) => {
         try {
             const { assetName, assetVersion, assetScope } = req.params;
@@ -66,7 +65,7 @@ app.get(
 app.get(
     '/asset/:assetScope?/:assetName/v/:assetVersion/index.css',
     useMetrics(requestCounter),
-    cssHeaders,
+    useCssAssetHeaders,
     async (req, res) => {
         try {
             const { assetName, assetVersion, assetScope } = req.params;
