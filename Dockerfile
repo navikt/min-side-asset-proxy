@@ -4,10 +4,9 @@ WORKDIR /usr/src/app
 
 COPY package.json .
 COPY package-lock.json .
-COPY index.js .
-COPY storage ./storage
-COPY aliases-css.json .
-COPY aliases-esm.json .
+COPY server.js .
+COPY src ./src
+COPY aliases ./aliases
 
 RUN npm ci
 

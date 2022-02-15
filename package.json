@@ -2,15 +2,17 @@
     "name": "min-side-asset-proxy",
     "version": "1.0.0",
     "description": "Proxy layer for accessing assets stored in a Google bucket",
-    "main": "index.js",
     "scripts": {
-        "start": "node index.js",
-        "dev": "development=true nodemon index.js"
+        "start": "node server.js",
+        "dev": "NODE_ENV=development nodemon server.js",
+        "test": "jest",
+        "test-watch": "jest --watch"
     },
     "keywords": [],
     "author": "NAV IT",
     "license": "MIT",
     "devDependencies": {
+        "jest": "^27.5.1",
         "nodemon": "^2.0.15"
     },
     "dependencies": {
