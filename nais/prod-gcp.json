@@ -1,0 +1,7 @@
+{
+  "app": "asset-bucket-proxy",
+  "namespace": "min-side",
+  "team": "min-side",
+  "ingresses": ["https://min-side-assets.intern.nav.no"],
+  "corsAllowedDomain": "*"
+}
