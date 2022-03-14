@@ -42,7 +42,7 @@ function respondWithFileContents(file, res) {
 }
 
 app.get(
-    '/asset/:assetScope?/:assetName/v/:assetVersion/index.esm.js',
+    '/:assetScope?/:assetName/:assetVersion/esm/index.js',
     useMetrics(requestCounter),
     useJsAssetHeaders,
     async (req, res) => {
@@ -63,7 +63,7 @@ app.get(
 );
 
 app.get(
-    '/asset/:assetScope?/:assetName/v/:assetVersion/index.css',
+    '/:assetScope?/:assetName/:assetVersion/index.css',
     useMetrics(requestCounter),
     useCssAssetHeaders,
     async (req, res) => {

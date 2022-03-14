@@ -2,16 +2,16 @@ const getPackageIdentifiers = require('../utils/getPackageIdentifiers');
 
 function getJsAssetPath(packageName, packageVersion, scope) {
     if (scope) {
-        return `/asset/${scope}/${packageName}/v/${packageVersion}/index.esm.js`;
+        return `/${scope}/${packageName}/${packageVersion}/esm/index.js`;
     }
-    return `/asset/${packageName}/v/${packageVersion}/index.esm.js`;
+    return `/${packageName}/${packageVersion}/esm/index.js`;
 }
 
 function getCssAssetPath(packageName, packageVersion, scope) {
     if (scope) {
-        return `/asset/${scope}/${packageName}/v/${packageVersion}/index.css`;
+        return `/${scope}/${packageName}/${packageVersion}/index.css`;
     }
-    return `/asset/${packageName}/v/${packageVersion}/index.css`;
+    return `/${packageName}/${packageVersion}/index.css`;
 }
 
 function getAliasMapping(assetName, alias, assetType) {
