@@ -29,15 +29,15 @@ describe('getAliasedPaths', () => {
     test('it should return alias paths in correct formats for scoped js assets', () => {
         const [alias] = getAliasedPaths(dsReactAliasing, 'js');
         const [aliasedPath, actualPath] = alias;
-        expect(aliasedPath).toBe('/asset/@navikt/ds-react/v/1/index.esm.js');
-        expect(actualPath).toBe('/asset/@navikt/ds-react/v/1.2.0/index.esm.js');
+        expect(aliasedPath).toBe('/@navikt/ds-react/1/esm/index.js');
+        expect(actualPath).toBe('/@navikt/ds-react/1.2.0/esm/index.js');
     });
 
     test('it should return alias paths in correct formats for unscoped js assets', () => {
         const [alias] = getAliasedPaths(navFrontendTypografiAliasing, 'js');
         const [aliasedPath, actualPath] = alias;
-        expect(aliasedPath).toBe('/asset/nav-frontend-typografi/v/1/index.esm.js');
-        expect(actualPath).toBe('/asset/nav-frontend-typografi/v/1.0.0/index.esm.js');
+        expect(aliasedPath).toBe('/nav-frontend-typografi/1/esm/index.js');
+        expect(actualPath).toBe('/nav-frontend-typografi/1.0.0/esm/index.js');
     });
 
     it('should return the correct number of aliases', () => {
@@ -48,14 +48,14 @@ describe('getAliasedPaths', () => {
     test('it should return alias paths in correct formats for scoped css assets', () => {
         const [alias] = getAliasedPaths(dsCssAliasing, 'css');
         const [aliasedPath, actualPath] = alias;
-        expect(aliasedPath).toBe('/asset/@navikt/ds-css/v/1/index.css');
-        expect(actualPath).toBe('/asset/@navikt/ds-css/v/1.2.0/index.css');
+        expect(aliasedPath).toBe('/@navikt/ds-css/1/index.css');
+        expect(actualPath).toBe('/@navikt/ds-css/1.2.0/index.css');
     });
 
     test('it should return alias paths in correct formats for unscoped css assets', () => {
         const [alias] = getAliasedPaths(navFrontendTypografiStylesAliasing, 'css');
         const [aliasedPath, actualPath] = alias;
-        expect(aliasedPath).toBe('/asset/nav-frontend-typografi-styles/v/1/index.css');
-        expect(actualPath).toBe('/asset/nav-frontend-typografi-styles/v/1.0.0/index.css');
+        expect(aliasedPath).toBe('/nav-frontend-typografi-styles/1/index.css');
+        expect(actualPath).toBe('/nav-frontend-typografi-styles/1.0.0/index.css');
     });
 });
