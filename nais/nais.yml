@@ -37,6 +37,11 @@ spec:
           age: 7
           numNewerVersions: 2
           withState: ANY
+      - name: min-side-assets-prod
+          lifecycleCondition:
+            age: 7
+            numNewerVersions: 2
+            withState: ANY
   prometheus:
     enabled: true
     path: /internal/metrics
