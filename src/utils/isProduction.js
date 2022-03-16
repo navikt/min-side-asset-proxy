@@ -1,1 +1,1 @@
-module.exports = () => process.env.CONTEXT === 'production';
+module.exports = () => process.env.NAIS_CLUSTER_NAME === 'prod-gcp';
