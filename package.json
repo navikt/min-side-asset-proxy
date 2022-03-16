@@ -18,7 +18,7 @@
     "dependencies": {
         "@google-cloud/storage": "^5.18.1",
         "cors": "^2.8.5",
-        "express": "^4.17.2",
+        "express": "^4.17.3",
         "helmet": "^4.6.0",
         "prom-client": "^14.0.1"
     }
