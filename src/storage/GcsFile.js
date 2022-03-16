@@ -1,8 +1,9 @@
 const { Storage } = require('@google-cloud/storage');
+const isProduction = require('../utils/isProduction');
 const storage = new Storage();
 
-const bucket = storage.bucket('min-side-assets');
-    
+const bucket = storage.bucket(isProduction ? 'min-side-assets-prod' : 'min-side-assets');
+
 class GcsFile {
     file = null;
     readStream = null;
