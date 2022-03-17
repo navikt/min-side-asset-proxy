@@ -10,7 +10,6 @@ class GcsFile {
     readStream = null;
 
     constructor(pathToFile) {
-        console.log(`BucketName: ${bucketName}`);
         this.file = bucket.file(pathToFile);
         this.readStream = this.file.createReadStream().on('error', (error) => {
             console.error('Error reading file from bucket');
