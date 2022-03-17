@@ -56,7 +56,7 @@ app.get(
                 res.sendStatus(404);
             }
         } catch (error) {
-            console.error('Error getting asset', error.statusMessage);
+            console.error('Error getting asset', error.statusMessage, error.message);
             res.sendStatus(500);
         }
     }
@@ -77,7 +77,7 @@ app.get(
                 res.sendStatus(404);
             }
         } catch (error) {
-            console.error('Error getting asset', error.statusMessage);
+            console.error('Error getting asset', error.statusMessage, error.message);
             res.sendStatus(500);
         }
     }
