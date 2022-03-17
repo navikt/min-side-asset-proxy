@@ -48,6 +48,7 @@ app.get(
     async (req, res) => {
         try {
             const { assetName, assetVersion, assetScope } = req.params;
+            console.log(`Processing request for ${assetScope ? assetScope + '/' : ''}${assetName}@${assetVersion}`)
             const file = getJsFileObject(assetName, assetVersion, assetScope);
             const fileExists = await file.exists();
             if (fileExists) {
@@ -69,6 +70,7 @@ app.get(
     async (req, res) => {
         try {
             const { assetName, assetVersion, assetScope } = req.params;
+            console.log(`Processing request for ${assetScope ? assetScope + '/' : ''}${assetName}@${assetVersion}`)
             const file = getCssFileObject(assetName, assetVersion, assetScope);
             const fileExists = await file.exists();
             if (fileExists) {
