@@ -1,0 +1,45 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: {{app}}
+  namespace: {{namespace}}
+  labels:
+    team: {{team}}
+spec:
+  image: {{image}}
+  port: 8080
+  liveness:
+    path: /internal/isAlive
+    initialDelay: 20
+    timeout: 60
+  readiness:
+    path: /internal/isReady
+    initialDelay: 20
+    timeout: 60
+  replicas:
+    min: 2
+    max: 2
+    cpuThresholdPercentage: 50
+  limits:
+    cpu: "200m"
+    memory: "256Mi"
+  requests:
+    cpu: "200m"
+    memory: "256Mi"
+  ingresses:
+  {{#each ingresses as |url|}}
+     - {{url}}
+  {{/each}}
+  gcp:
+    buckets:
+      - name: min-side-assets
+        lifecycleCondition:
+          age: 7
+          numNewerVersions: 2
+          withState: ANY
+  prometheus:
+    enabled: true
+    path: /internal/metrics
+  env:
+    - name: CORS_ALLOWED_DOMAIN
+      value: "{{corsAllowedDomain}}"
