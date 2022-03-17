@@ -14,7 +14,7 @@ class SampleFile {
     }
 
     exists() {
-        return true;
+        return [true];
     }
 }
 

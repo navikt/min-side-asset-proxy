@@ -50,7 +50,8 @@ app.get(
             const { assetName, assetVersion, assetScope } = req.params;
             console.log(`Processing request for ${assetScope ? assetScope + '/' : ''}${assetName}@${assetVersion}`)
             const file = getJsFileObject(assetName, assetVersion, assetScope);
-            const fileExists = await file.exists();
+            const fileExistsResponse = await file.exists();
+            const fileExists = fileExistsResponse[0];
             if (fileExists) {
                 file.readFileContents();
                 respondWithFileContents(file, res);
@@ -73,7 +74,8 @@ app.get(
             const { assetName, assetVersion, assetScope } = req.params;
             console.log(`Processing request for ${assetScope ? assetScope + '/' : ''}${assetName}@${assetVersion}`)
             const file = getCssFileObject(assetName, assetVersion, assetScope);
-            const fileExists = await file.exists();
+            const fileExistsResponse = await file.exists();
+            const fileExists = fileExistsResponse[0];
             if (fileExists) {
                 file.readFileContents();
                 respondWithFileContents(file, res);
