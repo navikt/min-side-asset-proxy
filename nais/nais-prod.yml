@@ -32,11 +32,6 @@ spec:
   {{/each}}
   gcp:
     buckets:
-      - name: min-side-assets
-        lifecycleCondition:
-          age: 7
-          numNewerVersions: 2
-          withState: ANY
       - name: min-side-assets-prod
         lifecycleCondition:
           age: 7
