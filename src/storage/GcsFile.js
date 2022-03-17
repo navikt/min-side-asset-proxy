@@ -2,8 +2,8 @@ const { Storage } = require('@google-cloud/storage');
 const isProduction = require('../utils/isProduction');
 const storage = new Storage();
 
-const bucket = storage.bucket(isProduction ? 'min-side-assets-prod' : 'min-side-assets');
-const bucketName = isProduction ? 'min-side-assets-prod' : 'min-side-assets';
+const bucketName = isProduction() ? 'min-side-assets-prod' : 'min-side-assets';
+const bucket = storage.bucket(bucketName);
 
 class GcsFile {
     file = null;
@@ -12,7 +12,6 @@ class GcsFile {
     constructor(pathToFile) {
         console.log(`BucketName: ${bucketName}`);
         this.file = bucket.file(pathToFile);
-        console.log(`Bucket: ${bucket}`);
         this.readStream = this.file.createReadStream().on('error', (error) => {
             console.error('Error reading file from bucket');
         });
