@@ -4,6 +4,7 @@ const storage = new Storage();
 
 const bucketName = isProduction() ? 'min-side-assets-prod' : 'min-side-assets';
 const bucket = storage.bucket(bucketName);
+console.info(`Using bucket ${bucketName}`);
 
 class GcsFile {
     file = null;
