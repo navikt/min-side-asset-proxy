@@ -52,6 +52,7 @@ app.get(
             const file = getJsFileObject(assetName, assetVersion, assetScope);
             const fileExists = await file.exists();
             if (fileExists) {
+                file.readFileContents();
                 respondWithFileContents(file, res);
             } else {
                 res.sendStatus(404);
@@ -74,6 +75,7 @@ app.get(
             const file = getCssFileObject(assetName, assetVersion, assetScope);
             const fileExists = await file.exists();
             if (fileExists) {
+                file.readFileContents();
                 respondWithFileContents(file, res);
             } else {
                 res.sendStatus(404);
