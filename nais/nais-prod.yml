@@ -8,6 +8,9 @@ metadata:
 spec:
   image: {{image}}
   port: 8080
+  ingresses:
+    - "https://min-side-assets.intern.nav.no"
+    - "https://min-side-assets.nav.no"
   liveness:
     path: /internal/isAlive
     initialDelay: 20
@@ -26,10 +29,6 @@ spec:
   requests:
     cpu: "200m"
     memory: "256Mi"
-  ingresses:
-  {{#each ingresses as |url|}}
-     - {{url}}
-  {{/each}}
   gcp:
     buckets:
       - name: min-side-assets-prod

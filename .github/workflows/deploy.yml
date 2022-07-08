@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - main
+    - test
 env:
   docker_image: ghcr.io/${{ github.repository }}:${{ github.sha }}
 jobs:
