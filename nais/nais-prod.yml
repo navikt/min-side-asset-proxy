@@ -9,7 +9,6 @@ spec:
   image: {{image}}
   port: 8080
   ingresses:
-    - "https://min-side-assets.intern.nav.no"
     - "https://min-side-assets.nav.no"
   liveness:
     path: /internal/isAlive
