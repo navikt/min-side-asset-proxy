@@ -1,5 +1,5 @@
 {
-  "app": "min-side-asset-bucket-proxy",
+  "app": "min-side-asset-proxy",
   "namespace": "min-side",
   "team": "min-side",
   "ingresses": ["https://min-side-assets.intern.nav.no", "https://min-side-assets.nav.no"],
