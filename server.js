@@ -8,6 +8,7 @@ const useMetrics = require('./src/middleware/useMetrics');
 const { useCssAssetHeaders, useJsAssetHeaders } = require('./src/middleware/assetResponseHeaders');
 const aliasesEsm = require('./aliases/esm.json');
 const aliasesCss = require('./aliases/css.json');
+const basePath = '/tms-min-side-assets';
 
 const app = express();
 applyDefaultMiddlewares(app);
@@ -19,22 +20,22 @@ const requestCounter = new promClient.Counter({
     labelNames: ['file'],
 });
 
-app.get('/internal/metrics', async (req, res) => {
+app.get(`${basePath}/internal/metrics`, async (req, res) => {
     const metrics = await promClient.register.metrics();
     res.set('Content-Type', promClient.register.contentType).send(metrics);
 });
 
-app.get('/internal/isReady', (req, res) => res.sendStatus(200));
-app.get('/internal/isAlive', (req, res) => res.sendStatus(200));
+app.get(`${basePath}/internal/isReady`, (req, res) => res.sendStatus(200));
+app.get(`${basePath}/internal/isAlive`, (req, res) => res.sendStatus(200));
 
 function addRedirectUrl(originalUrl, redirectUrl) {
     app.get(originalUrl, (req, res) => res.redirect(redirectUrl));
 }
 
-const jsAliases = getAliasedPaths(aliasesEsm, 'js');
+const jsAliases = getAliasedPaths(basePath, aliasesEsm, 'js');
 jsAliases.forEach(([aliasPath, actualPath]) => addRedirectUrl(aliasPath, actualPath));
 
-const cssAliases = getAliasedPaths(aliasesCss, 'css');
+const cssAliases = getAliasedPaths(basePath, aliasesCss, 'css');
 cssAliases.forEach(([aliasPath, actualPath]) => addRedirectUrl(aliasPath, actualPath));
 
 function respondWithFileContents(file, res) {
@@ -42,7 +43,7 @@ function respondWithFileContents(file, res) {
 }
 
 app.get(
-    '/:assetScope?/:assetName/:assetVersion/esm/index.js',
+    `${basePath}/:assetScope?/:assetName/:assetVersion/esm/index.js`,
     useMetrics(requestCounter),
     useJsAssetHeaders,
     async (req, res) => {
@@ -66,7 +67,7 @@ app.get(
 );
 
 app.get(
-    '/:assetScope?/:assetName/:assetVersion/index.css',
+    `${basePath}/:assetScope?/:assetName/:assetVersion/index.css`,
     useMetrics(requestCounter),
     useCssAssetHeaders,
     async (req, res) => {

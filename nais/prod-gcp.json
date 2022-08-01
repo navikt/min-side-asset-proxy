@@ -2,6 +2,6 @@
   "app": "min-side-asset-proxy",
   "namespace": "min-side",
   "team": "min-side",
-  "ingresses": ["https://min-side-assets.intern.nav.no", "https://min-side-assets.nav.no"],
+  "ingresses": ["https://www.nav.no/tms-min-side-assets", "https://www.intern.nav.no/tms-min-side-assets"],
   "corsAllowedDomain": "*"
 }
