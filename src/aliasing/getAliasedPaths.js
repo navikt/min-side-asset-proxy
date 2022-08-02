@@ -1,20 +1,20 @@
 const getPackageIdentifiers = require('../utils/getPackageIdentifiers');
 
-function getJsAssetPath(packageName, packageVersion, scope) {
+function getJsAssetPath(basePath, packageName, packageVersion, scope) {
     if (scope) {
-        return `/${scope}/${packageName}/${packageVersion}/esm/index.js`;
+        return `${basePath}/${scope}/${packageName}/${packageVersion}/esm/index.js`;
     }
-    return `/${packageName}/${packageVersion}/esm/index.js`;
+    return `${basePath}/${packageName}/${packageVersion}/esm/index.js`;
 }
 
-function getCssAssetPath(packageName, packageVersion, scope) {
+function getCssAssetPath(basePath, packageName, packageVersion, scope) {
     if (scope) {
-        return `/${scope}/${packageName}/${packageVersion}/index.css`;
+        return `${basePath}/${scope}/${packageName}/${packageVersion}/index.css`;
     }
-    return `/${packageName}/${packageVersion}/index.css`;
+    return `${basePath}/${packageName}/${packageVersion}/index.css`;
 }
 
-function getAliasMapping(assetName, alias, assetType) {
+function getAliasMapping(basePath, assetName, alias, assetType) {
     if (assetType !== 'js' && assetType !== 'css') {
         throw new Error('Invalid asset type in alias mapping, please specify as "js" or "css"');
     }
@@ -26,23 +26,23 @@ function getAliasMapping(assetName, alias, assetType) {
         actualPath = '';
 
     if (assetType === 'js') {
-        aliasedPath = getJsAssetPath(packageName, versionAlias, packageScope);
-        actualPath = getJsAssetPath(packageName, actualVersion, packageScope);
+        aliasedPath = getJsAssetPath(basePath, packageName, versionAlias, packageScope);
+        actualPath = getJsAssetPath(basePath, packageName, actualVersion, packageScope);
     } else if (assetType === 'css') {
-        aliasedPath = getCssAssetPath(packageName, versionAlias, packageScope);
-        actualPath = getCssAssetPath(packageName, actualVersion, packageScope);
+        aliasedPath = getCssAssetPath(basePath, packageName, versionAlias, packageScope);
+        actualPath = getCssAssetPath(basePath, packageName, actualVersion, packageScope);
     }
 
     return [aliasedPath, actualPath];
 }
 
-module.exports = function getAliasedPaths(aliases, assetType) {
+module.exports = function getAliasedPaths(basePath, aliases, assetType) {
     const namesOfAliasedAssets = Object.keys(aliases);
     const aliasedPaths = [];
     namesOfAliasedAssets.forEach((currentAssetName) => {
         const aliasesForCurrentAsset = Object.entries(aliases[currentAssetName]);
         aliasesForCurrentAsset.forEach((alias) => {
-            const pathWithAlias = getAliasMapping(currentAssetName, alias, assetType);
+            const pathWithAlias = getAliasMapping(basePath, currentAssetName, alias, assetType);
             aliasedPaths.push(pathWithAlias);
         });
     });
