@@ -3,7 +3,7 @@ on:
   push:
     branches:
     - main
-    - fiks-ingress
+    - oppgrader-react
 env:
   docker_image: ghcr.io/${{ github.repository }}:${{ github.sha }}
 jobs:
