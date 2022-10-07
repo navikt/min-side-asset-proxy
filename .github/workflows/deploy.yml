@@ -3,7 +3,7 @@ on:
   push:
     branches:
     - main
-    - oppgrader-react
+    - swr
 env:
   docker_image: ghcr.io/${{ github.repository }}:${{ github.sha }}
 jobs:
@@ -55,6 +55,7 @@ jobs:
         VARS: nais/dev-gcp.json
         VAR: image=${{ env.docker_image }}
   deployToProd:
+    if: github.ref == 'refs/heads/main'
     name: Deploy to prod-gcp
     needs: build
     runs-on: ubuntu-latest
