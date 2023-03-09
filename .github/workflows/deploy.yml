@@ -3,7 +3,7 @@ on:
   push:
     branches:
     - main
-    - swr
+    - react-router-dom
 env:
   docker_image: ghcr.io/${{ github.repository }}:${{ github.sha }}
 jobs:
