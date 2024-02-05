@@ -20,12 +20,13 @@ spec:
     min: 2
     max: 2
     cpuThresholdPercentage: 50
-  limits:
-    cpu: "200m"
-    memory: "256Mi"
-  requests:
-    cpu: "200m"
-    memory: "256Mi"
+  resources:
+    limits:
+      cpu: "400m"
+      memory: "512Mi"
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
   ingresses:
   {{#each ingresses as |url|}}
      - {{url}}
